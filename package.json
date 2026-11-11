@@ -1,9 +1,9 @@
 {
-  "name": "@local/agent-todo",
+  "name": "dsh-agent-todo",
   "version": "0.1.0",
-  "private": true,
+  "description": "DSH 插件：Agent-ToDo 多项目工作台，四个入口把会话里的想法收成胶囊、导出成可直接交给 Agent 的待办",
   "type": "module",
-  "description": "Agent ToDo workspace for DSH: 5-module PC workspace, flash capsules, mindmaps and Agent handoff.",
+  "main": "index.js",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -18,8 +18,42 @@
     "locale/*.json",
     "icon.svg",
     "assets/**",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "src/client/**",
+    "scripts/**"
   ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "agent-todo",
+    "todo",
+    "task",
+    "workflow",
+    "handoff",
+    "mindmap"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/329604421/agent-todo-plugin.git"
+  },
+  "homepage": "https://github.com/329604421/agent-todo-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/329604421/agent-todo-plugin/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "杜春生",
+    "url": "https://github.com/329604421"
+  },
+  "engines": {
+    "node": ">=22.19"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
@@ -31,7 +65,7 @@
   },
   "scripts": {
     "build": "node scripts/build-client.cjs",
-    "check": "node --check index.js && node --check client.js && node --check scripts/preview-capsule.cjs && node --check scripts/verify-mine.cjs && node --check scripts/verify-standard.cjs && node --check scripts/preview-form-drawer.cjs && node scripts/smoke-client.cjs && node scripts/verify-package.cjs && node scripts/verify-desktop.cjs && node scripts/verify-mine.cjs && node scripts/verify-standard.cjs && node scripts/verify-export-enhance.cjs && node scripts/verify-global-overlays.cjs",
+    "check": "node --check index.js && node --check client.js && node --check scripts/preview-capsule.cjs && node --check scripts/verify-mine.cjs && node --check scripts/verify-standard.cjs && node --check scripts/preview-form-drawer.cjs && node --check scripts/verify-export-enhance.cjs && node --check scripts/verify-global-overlays.cjs && node --check scripts/verify-capsule-refresh.cjs && node scripts/smoke-client.cjs && node scripts/verify-package.cjs && node scripts/verify-desktop.cjs && node scripts/verify-mine.cjs && node scripts/verify-standard.cjs && node scripts/verify-export-enhance.cjs && node scripts/verify-global-overlays.cjs && node scripts/verify-capsule-refresh.cjs",
     "preview": "node scripts/preview-capsule.cjs",
     "preview:forms": "node scripts/preview-form-drawer.cjs",
     "verify": "node scripts/verify-package.cjs"

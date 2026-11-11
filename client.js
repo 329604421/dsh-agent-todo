@@ -1,9 +1,9 @@
 /* Agent ToDo · DSH client — GENERATED FILE. Do not edit by hand.
  * Source: src/client/*.js   Build: node scripts/build-client.cjs
- * Generated at 2026-11-11T06:46:12.018Z
+ * Generated at 2026-11-11T09:44:57.039Z
  */
 window.__ModuleLoader__.load({
-  id: '@local/agent-todo',
+  id: 'dsh-agent-todo',
   factory(require) {
     const React = require('react');
     const h = React.createElement;
@@ -7301,6 +7301,17 @@ window.__ModuleLoader__.load({
           posRef.current = pos
           var g = geomOf(b)
           var open = !!(c && c.open)
+          /* ★ 轮次 20：每次点悬浮 logo 打开胶囊列表都重新拉一次 /sync ——
+           * 开场那份快照可能已经过时（小程序里刚记的闪念、别的设备上刚删的胶囊，
+           * 都要在列表里看得到）。与输入框导出器（样式标准 §4.11）同一条口径。
+           * ⚠️ 只在已登录时拉：/sync 要设备 JWT，未登录拉会 401 误报连接错误，
+           *    还会用服务端快照盖掉演示数据。
+           * 依赖只有 [open] ⇒ 一次打开恰好一次；同步引起的 store 重渲染、
+           * 起录 / 切编辑 / 翻页都不改 open，不会重复发。 */
+          React.useEffect(function () {
+            if (!open) return
+            if (B.get().ui.connected) B.sync(false)
+          }, [open])
           /* ★ v1.4 起 · 打开态：浮键组停到**主抽屉右侧那条竖排带**上（v1.5 对齐
            * PC / 横屏 `.rail-brand` + `.rail-write`：两颗 40 方键，写在上、说在下）。
            * 抽屉一开，保存的归一化坐标只描述"关闭时的位置"，继续沿用会正好落在列表上。

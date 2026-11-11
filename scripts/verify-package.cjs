@@ -112,7 +112,7 @@ function harness(source, opts) {
   vm.createContext(sandbox)
   vm.runInContext(source, sandbox, { filename: 'client.js' })
   assert.ok(loaded, 'client.js must call window.__ModuleLoader__.load')
-  assert.equal(loaded.id, '@local/agent-todo')
+  assert.equal(loaded.id, 'dsh-agent-todo')
   const plugin = loaded.factory((name) => {
     assert.equal(name, 'react')
     return React
@@ -160,7 +160,7 @@ async function main() {
   /* ------------------------------------------------------------ manifest --- */
   check('manifest: DSH bundle wiring', () => {
     const manifest = JSON.parse(read('package.json'))
-    assert.equal(manifest.name, '@local/agent-todo')
+    assert.equal(manifest.name, 'dsh-agent-todo')
     assert.equal(manifest.type, 'module')
     assert.equal(manifest.dsh.bundle.patch, './cordis.patch.yml')
     assert.equal(manifest.dsh.client.platform, 'web')
@@ -265,7 +265,7 @@ async function main() {
     ]) assert.ok(host.includes("path: '" + route + "'"), 'missing host route ' + route)
     assert.ok(host.includes("name: 'agent_todo'"))
     const patch = read('cordis.patch.yml')
-    assert.ok(patch.includes('@local/agent-todo'))
+    assert.ok(patch.includes('dsh-agent-todo'))
     assert.ok(patch.includes('enableAgentTools: true'))
     const core = read('assets/mindmap-core.js')
     assert.ok(core.includes('window.AgentTodoMindmapCore'))

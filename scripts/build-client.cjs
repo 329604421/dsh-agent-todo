@@ -31,7 +31,7 @@ const header = [
   ' * Generated at ' + new Date().toISOString(),
   ' */',
   "window.__ModuleLoader__.load({",
-  "  id: '@local/agent-todo',",
+  "  id: 'dsh-agent-todo',",
   '  factory(require) {',
   "    const React = require('react');",
   '    const h = React.createElement;',

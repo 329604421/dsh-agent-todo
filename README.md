@@ -4,6 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
+**安装**：`dsh plugin --profile web add github:329604421/agent-todo-plugin`
+
 **Agent-ToDo** 是给 FDE（Forward Deployed Engineer，前沿部署工程师）做的多项目工作台：把现场记下的一句话收进闪念胶囊，归到项目、拆成脑图，最后连上下文一起交给 Agent。这个插件把它装进 DeepSeek Harness（下称 DSH）——装好后 DSH 里多出四个入口，每一处都能把一句话、一段想法、一份交付物直接变成待办。
 
 设计前提只有一条：**不搬应用，只把能力送到手边**。四个入口里后三个都长在会话里，不用切窗口。
@@ -16,11 +18,19 @@
 
 需要 DeepSeek Harness 的 Web profile（`dsh.client.platform: web`），以及 Node.js 22.19+ 或 24+。
 
+源码安装（当前可用）：
+
 ```bash
 dsh plugin --profile web add github:329604421/agent-todo-plugin
 ```
 
-安装完成后重启 `dsh web`。目前以 GitHub 源码方式分发，**尚未发布 npm 包、也未上架 DSH 插件中心**，请用上面这条命令安装。
+npm 包发布后，也可以一键安装：
+
+```bash
+dsh plugin --profile web add dsh-agent-todo
+```
+
+安装完成后重启 `dsh web`。仓库已提交构建产物 `client.js`，源码安装不需要 `prepare` 脚本，也不需要用户放开 `allowBuilds` 构建授权。
 
 分类：工作流与自动化 · 许可证：MIT
 
@@ -35,7 +45,7 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 后三个都不离开会话。此外还有全局快捷键 `Alt+Space`（或 `⌘/Ctrl+Shift+Space`）直接打开快速捕获。
 
-![四个入口：左侧主菜单、全局悬浮 logo、输入框按钮、会话结尾闪念](docs/screenshots/dsh-four-entries.png)
+![四个入口：左侧主菜单、全局悬浮 logo、输入框按钮、会话结尾闪念](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-four-entries.png)
 
 ## 扫码加六位码，十秒登录
 
@@ -49,7 +59,7 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 不想登录也能完整体验：弹窗底部点「**先看看演示数据**」，未登录状态一切可点，用的是本地演示数据，不写库、不发请求、不调用模型，界面上有明确的「演示数据」提示。
 
-![登录弹窗：微信扫码进小程序取六位码](docs/screenshots/dsh-login.png)
+![登录弹窗：微信扫码进小程序取六位码](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-login.png)
 
 ## 小程序里有的，插件里都有
 
@@ -68,9 +78,9 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 原生触点还包括助手消息里的「闪念」动作、输入框的待办导出与「增强导出」，以及供 Agent 调用的 `agent_todo` 工具（18 个 action）。样式跟随 DSH 主题令牌，浅色 / 深色都可用，不引入 iframe、不复刻小程序 runtime、不打包第二份 React。
 
-![概览页：活跃度日历、今日数据、项目待办统计](docs/screenshots/dsh-overview.png)
+![概览页：活跃度日历、今日数据、项目待办统计](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-overview.png)
 
-![脑图页：列表收进左栏，右侧是完整思维导图](docs/screenshots/dsh-mindmap.png)
+![脑图页：列表收进左栏，右侧是完整思维导图](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-mindmap.png)
 
 ## 贴着会话的三件事
 
@@ -91,11 +101,11 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 工具条上的「闪念」长在 Agent 刚交付完附件的位置，点开时输入框已经预填了交付物的文件名。一个会话把方案聊定、产出交接文档，再新开几个会话分头实现——胶囊里带着文件名，新会话就知道下一步干什么、依据在哪。上下文太长会掉信息，上下文断掉更贵。
 
-![任意会话里点悬浮 logo，对话区浮出胶囊列表](docs/screenshots/dsh-capsules.png)
+![任意会话里点悬浮 logo，对话区浮出胶囊列表](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-capsules.png)
 
-![导出待办到输入框：按工作区筛选、导出 / 增强导出](docs/screenshots/dsh-export.png)
+![导出待办到输入框：按工作区筛选、导出 / 增强导出](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-export.png)
 
-![交付完一份文件，顺手记一条，文件名自动带入](docs/screenshots/dsh-flash-note.png)
+![交付完一份文件，顺手记一条，文件名自动带入](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/dsh-flash-note.png)
 
 ## 数据与凭证
 
@@ -109,11 +119,11 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 下面是 Agent-ToDo 小程序 / PC 端界面，与插件共用同一套组件规范和设计令牌：
 
-![PC 端待办详情](docs/screenshots/pc-todo-detail.png)
+![PC 端待办详情](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/pc-todo-detail.png)
 
-![概览页](docs/screenshots/pad-overview.jpg)
+![概览页](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/pad-overview.jpg)
 
-![脑图编辑器](docs/screenshots/pad-mindmap-detail.jpg)
+![脑图编辑器](https://raw.githubusercontent.com/329604421/agent-todo-plugin/main/docs/screenshots/pad-mindmap-detail.jpg)
 
 ## 权限与外部服务
 
@@ -130,7 +140,8 @@ dsh plugin --profile web add github:329604421/agent-todo-plugin
 
 ## 兼容与已知限制
 
-- 目标为 DSH 的 Web profile（`dsh.client.platform: web`），使用宿主提供的 React 18，无第三方运行时依赖
+- 目标为 DSH 的 Web profile（`dsh.client.platform: web`），使用宿主提供的 React 18，无第三方运行时依赖；`engines.node` 要求 `>=22.19`
+- 未锁定 `engines.dsh` 版本范围：作者本机 DSH 桌面版已加载验证，但还没有跨版本兼容矩阵，写死范围反而可能让启动时被误拒绝
 - 真实 DSH GUI 的全量视觉复验（样式标准 §9 共 21 条）尚未完成；语音链路也还未做真机验收
 - 判据脚本里的跨端审计会对照主仓库的小程序源码，独立 clone 本仓库后跑 `npm run check` 需要同时具备 `329604421/agent-todo` 的工作区结构；`node --check` 与 smoke 判据不依赖它
 
@@ -146,6 +157,7 @@ npm run verify    # 只跑包级判据
 
 ## 关联
 
+- npm 包：https://www.npmjs.com/package/dsh-agent-todo
 - 主仓库（小程序 + 后端）：https://github.com/329604421/agent-todo
 - 官网：https://todo.memorymap.cn
 - 社区插件目录：https://dsh-plugin.org

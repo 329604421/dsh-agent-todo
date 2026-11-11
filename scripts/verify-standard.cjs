@@ -2553,5 +2553,60 @@ check('round18-3: the picker re-syncs from its [open] effect, once and only whil
   (a) => withFile(a, '95-overlays.js', swap(a.srcMap['95-overlays.js'],
     'if (B.get().ui.connected) B.sync(false)', 'void B.get().ui.connected')))
 
+/* ════════════════════════════════════════════════════════════════════════
+ * 轮次 20 · 悬浮 logo → 闪念胶囊列表：每次打开重新拉 /sync
+ * 口径与 §4.11 输入框导出器一致；行为真值另见 scripts/verify-capsule-refresh.cjs
+ * （真按 deps 执行 useEffect，并模拟一次 pointerdown/up 点击悬浮键）。
+ * ════════════════════════════════════════════════════════════════════════ */
+check('round20-1: the capsule layer re-syncs from a [open] effect, once and only while logged in',
+  (a) => {
+    const d = stripComments(a.srcMap['80-capsule.js'])
+    assert.equal((d.match(/B\.sync\(false\)/g) || []).length, 1,
+      'one single refresh call site — never from render, never per card')
+    const at = d.indexOf('B.sync(false)')
+    assert.ok(at > d.indexOf('function FloatingCapsule()'),
+      'the refresh lives in the capsule layer, not in a module-level handler')
+    assert.ok(/React\.useEffect\(function \(\) \{/.test(d.slice(Math.max(0, at - 300), at)),
+      'refresh must be registered by an effect, not called during render')
+    assert.ok(/if \(!open\) return\s+if \(B\.get\(\)\.ui\.connected\) B\.sync\(false\)/.test(d),
+      'a closed drawer and guests must never hit /sync')
+    assert.ok(/\}, \[open\]\)/.test(d.slice(at, at + 90)),
+      'deps stay [open]: a store refresh / record / paginate must not re-trigger it')
+  },
+  (a) => withFile(a, '80-capsule.js', swap(a.srcMap['80-capsule.js'],
+    'if (B.get().ui.connected) B.sync(false)', 'void B.get().ui.connected')))
+
+check('round20-2: /sync really replaces the capsule inbox (adaptSnapshot keeps capsules)',
+  (a) => {
+    const snap = a.AT.core.adaptSnapshot({ capsules: [
+      { id: 'c1', text: 'new flash', createdAt: '2026-11-11T07:00:00Z' },
+      { id: 'c2', text: 'gone', deletedAt: '2026-11-11T07:01:00Z' },
+      { id: 'c3', text: 'linked', consumedAt: '2026-11-11T07:02:00Z' }
+    ] })
+    assert.equal(snap.capsules.length, 3, 'every server capsule survives adaptation')
+    assert.equal(a.AT.core.capsules(snap).length, 1,
+      'only the live, unlinked capsule shows in the inbox')
+    assert.equal(a.AT.core.deletedCapsules(snap).length, 1,
+      'deleted flags survive, or the deleted list would go empty')
+    const d = stripComments(a.srcMap['20-core.js'])
+    assert.ok(/capsules: capsules/.test(d),
+      'the snapshot must actually carry capsules into the store, or the refresh is a no-op')
+  },
+  (a) => withFile(a, '20-core.js', swap(a.srcMap['20-core.js'],
+    'capsules: capsules,', 'capsules: [],')))
+
+check('round20-3: the logo click flips open, so the [open] effect really fires on every open',
+  (a) => {
+    const d = stripComments(a.srcMap['80-capsule.js'])
+    const opener = d.slice(d.indexOf('function openCapsule('), d.indexOf('function closeCapsule('))
+    assert.ok(/open: true/.test(opener), 'openCapsule must set open:true')
+    const up = d.slice(d.indexOf('function onFabUp('), d.indexOf('function onFabCancel('))
+    assert.ok(/openCapsule\(''\)/.test(up), 'pointer-up on the FAB opens the list')
+    const key = d.slice(d.indexOf('function onFabKey('), d.indexOf('function onCardClick('))
+    assert.ok(/openCapsule\(''\)/.test(key), 'Enter / Space opens the list too')
+  },
+  (a) => withFile(a, '80-capsule.js', swap(a.srcMap['80-capsule.js'],
+    "      openCapsule('')\n    }\n    function onFabCancel()", "      void 0\n    }\n    function onFabCancel()")))
+
 console.log(JSON.stringify({ ok: true, checks: passed.length, passed }, null, 2))
 

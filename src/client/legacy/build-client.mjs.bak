@@ -24,7 +24,7 @@ await build({
   banner: {
     js: [
       "window.__ModuleLoader__.load({",
-      "  id: '@local/agent-todo',",
+      "  id: 'dsh-agent-todo',",
       "  factory(require) {",
       "    const React = require('react');",
     ].join('\n'),
