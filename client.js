@@ -1,6 +1,6 @@
 /* Agent ToDo · DSH client — GENERATED FILE. Do not edit by hand.
  * Source: src/client/*.js   Build: node scripts/build-client.cjs
- * Generated at 2026-11-11T09:44:57.039Z
+ * Generated at release-build
  */
 window.__ModuleLoader__.load({
   id: 'dsh-agent-todo',
