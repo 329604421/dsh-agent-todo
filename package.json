@@ -1,0 +1,39 @@
+{
+  "name": "@local/agent-todo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Agent ToDo workspace for DSH: 5-module PC workspace, flash capsules, mindmaps and Agent handoff.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "assets/**",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-client.cjs",
+    "check": "node --check index.js && node --check client.js && node --check scripts/preview-capsule.cjs && node --check scripts/verify-mine.cjs && node --check scripts/verify-standard.cjs && node --check scripts/preview-form-drawer.cjs && node scripts/smoke-client.cjs && node scripts/verify-package.cjs && node scripts/verify-desktop.cjs && node scripts/verify-mine.cjs && node scripts/verify-standard.cjs && node scripts/verify-export-enhance.cjs && node scripts/verify-global-overlays.cjs",
+    "preview": "node scripts/preview-capsule.cjs",
+    "preview:forms": "node scripts/preview-form-drawer.cjs",
+    "verify": "node scripts/verify-package.cjs"
+  }
+}

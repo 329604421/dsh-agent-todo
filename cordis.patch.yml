@@ -1,0 +1,7 @@
+- insert:
+    - id: agent-todo
+      name: '@local/agent-todo'
+      config:
+        apiBase: 'https://todo.memorymap.cn/api/v1'
+        enableAgentTools: true
+        defaultView: overview

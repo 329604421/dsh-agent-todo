@@ -1,0 +1,11 @@
+node_modules/
+__pycache__/
+*.pyc
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+auth.json
+.env
+.env.*
+!.env.example

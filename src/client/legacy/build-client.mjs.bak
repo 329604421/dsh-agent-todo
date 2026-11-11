@@ -1,0 +1,44 @@
+import { build } from 'esbuild'
+
+/**
+ * The DSH client module loader expects:
+ *
+ *   window.__ModuleLoader__.load({ id, factory(require) { ... } })
+ *
+ * React is supplied by the host. We therefore bundle only the plugin code and
+ * inject `const React = require('react')` inside the factory. JSX is compiled
+ * to React.createElement (classic runtime) so the bundle never asks for
+ * react/jsx-runtime.
+ */
+await build({
+  entryPoints: ['src/client/entry.jsx'],
+  bundle: true,
+  format: 'iife',
+  globalName: '__AgentTodoClient',
+  outfile: 'client.js',
+  platform: 'browser',
+  target: ['es2020'],
+  jsx: 'transform',
+  jsxFactory: 'React.createElement',
+  jsxFragment: 'React.Fragment',
+  banner: {
+    js: [
+      "window.__ModuleLoader__.load({",
+      "  id: '@local/agent-todo',",
+      "  factory(require) {",
+      "    const React = require('react');",
+    ].join('\n'),
+  },
+  footer: {
+    js: [
+      "    return __AgentTodoClient.createClient(React);",
+      "  },",
+      "});",
+    ].join('\n'),
+  },
+  legalComments: 'none',
+  sourcemap: false,
+  minify: false,
+})
+
+console.log('built client.js')
