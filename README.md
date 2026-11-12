@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-**安装**：`dsh plugin --profile web add github:329604421/agent-todo-plugin`
+**安装**：`dsh plugin --profile web add dsh-agent-todo`
 
 **Agent-ToDo** 是给 FDE（Forward Deployed Engineer，前沿部署工程师）做的多项目工作台：把现场记下的一句话收进闪念胶囊，归到项目、拆成脑图，最后连上下文一起交给 Agent。这个插件把它装进 DeepSeek Harness（下称 DSH）——装好后 DSH 里多出四个入口，每一处都能把一句话、一段想法、一份交付物直接变成待办。
 
@@ -18,16 +18,16 @@
 
 需要 DeepSeek Harness 的 Web profile（`dsh.client.platform: web`），以及 Node.js 22.19+ 或 24+。
 
-源码安装（当前可用）：
-
-```bash
-dsh plugin --profile web add github:329604421/agent-todo-plugin
-```
-
-npm 包发布后，也可以一键安装：
+一键安装（npm）：
 
 ```bash
 dsh plugin --profile web add dsh-agent-todo
+```
+
+也可以源码安装：
+
+```bash
+dsh plugin --profile web add github:329604421/agent-todo-plugin
 ```
 
 安装完成后重启 `dsh web`。仓库已提交构建产物 `client.js`，源码安装不需要 `prepare` 脚本，也不需要用户放开 `allowBuilds` 构建授权。
