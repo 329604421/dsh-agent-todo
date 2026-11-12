@@ -36,11 +36,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/329604421/agent-todo-plugin.git"
+    "url": "git+https://github.com/329604421/dsh-agent-todo.git"
   },
-  "homepage": "https://github.com/329604421/agent-todo-plugin#readme",
+  "homepage": "https://github.com/329604421/dsh-agent-todo#readme",
   "bugs": {
-    "url": "https://github.com/329604421/agent-todo-plugin/issues"
+    "url": "https://github.com/329604421/dsh-agent-todo/issues"
   },
   "license": "MIT",
   "author": {
