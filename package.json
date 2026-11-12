@@ -1,6 +1,6 @@
 {
   "name": "dsh-agent-todo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH 插件：Agent-ToDo 多项目工作台，四个入口把会话里的想法收成胶囊、导出成可直接交给 Agent 的待办",
   "type": "module",
   "main": "index.js",
