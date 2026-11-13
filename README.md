@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-**安装**：`dsh plugin --profile web add dsh-agent-todo`
+**安装**：`dsh plugin --profile desktop add dsh-agent-todo`（`desktop` 换成你正在用的 profile 名，见「安装」）
 
 **Agent-ToDo** 是给 FDE（Forward Deployed Engineer，前沿部署工程师）做的多项目工作台：把现场记下的一句话收进闪念胶囊，归到项目、拆成脑图，最后连上下文一起交给 Agent。这个插件把它装进 DeepSeek Harness（下称 DSH）——装好后 DSH 里多出四个入口，每一处都能把一句话、一段想法、一份交付物直接变成待办。
 
@@ -16,21 +16,43 @@
 
 ## 安装
 
-需要 DeepSeek Harness 的 Web profile（`dsh.client.platform: web`），以及 Node.js 22.19+ 或 24+。
+需要 Node.js 22.19+ 或 24+。
 
-一键安装（npm）：
+**先分清两个「web」**，它们不是一回事：
+
+| 概念 | 是什么 | 谁来定 |
+| --- | --- | --- |
+| `dsh.client.platform: web` | 包声明里的**客户端表面类型**，DSH 只认字面量 `web`；桌面应用和 `dsh web` 命令行版共用这一套浏览器表面 | 插件作者写死，用户不用改 |
+| `--profile <名字>` | **安装目标**，即 `~/.dsh/profiles/` 下哪个配置子树接收这个插件 | 用户按自己正在用的 profile 填 |
+
+所以命令里的 profile 名要用你**当前实际在用的那个**，不是照抄声明里的 `web`。先查一下：
 
 ```bash
+ls ~/.dsh/profiles/        # 已有的 profile，目录名就是可用值
+echo $DSH_PROFILE          # 在 DSH 的运行环境里看当前 profile
+```
+
+桌面应用通常是 `desktop`，`dsh web` 命令行版通常是 `web`：
+
+```bash
+# DeepSeek Harness 桌面应用
+dsh plugin --profile desktop add dsh-agent-todo
+
+# dsh web 命令行版
 dsh plugin --profile web add dsh-agent-todo
 ```
 
-也可以源码安装：
+源码安装把包名换成仓库地址：
 
 ```bash
-dsh plugin --profile web add github:329604421/dsh-agent-todo
+dsh plugin --profile desktop add github:329604421/dsh-agent-todo
 ```
 
-安装完成后重启 `dsh web`。仓库已提交构建产物 `client.js`，源码安装不需要 `prepare` 脚本，也不需要用户放开 `allowBuilds` 构建授权。
+> ⚠️ **profile 名别猜**：`dsh plugin` 没有「当前 profile」的概念——不给 `--profile` 会直接报 `required option '--profile <name>' not specified`；给一个不存在的名字则会**静默新建空 profile** 并把插件装进去（stderr 只有一行 `initialized profile ...`）。那个 profile 不会被你正在用的 DSH 启动，表现就是「装上了，界面里却看不见」。装完看一眼 `~/.dsh/profiles/<名字>/` 里是否真的出现插件条目。
+>
+> 若已装进误建的 profile，清理前先确认该目录里只有这次安装产生的文件、没有会话或工作区数据，再按上表重装。
+
+安装完成后重启 DSH：桌面应用直接 `Ctrl+R` 刷新，`dsh web` 命令行版重启该进程。仓库已提交构建产物 `client.js`，源码安装不需要 `prepare` 脚本，也不需要用户放开 `allowBuilds` 构建授权。
 
 分类：工作流与自动化 · 许可证：MIT
 
@@ -140,7 +162,7 @@ dsh plugin --profile web add github:329604421/dsh-agent-todo
 
 ## 兼容与已知限制
 
-- 目标为 DSH 的 Web profile（`dsh.client.platform: web`），使用宿主提供的 React 18，无第三方运行时依赖；`engines.node` 要求 `>=22.19`
+- 目标为 DSH 的浏览器客户端表面，包声明 `dsh.client.platform: web`（DSH 只认字面量 `web`，桌面应用与 `dsh web` 命令行版共用）；使用宿主提供的 React 18，无第三方运行时依赖；`engines.node` 要求 `>=22.19`
 - 未锁定 `engines.dsh` 版本范围：作者本机 DSH 桌面版已加载验证，但还没有跨版本兼容矩阵，写死范围反而可能让启动时被误拒绝
 - 真实 DSH GUI 的全量视觉复验（样式标准 §9 共 21 条）尚未完成；语音链路也还未做真机验收
 - 判据脚本里的跨端审计会对照主仓库的小程序源码，独立 clone 本仓库后跑 `npm run check` 需要同时具备 `329604421/agent-todo` 的工作区结构；`node --check` 与 smoke 判据不依赖它
